@@ -1,0 +1,10 @@
+CREATE FUNCTION dbo.GetPeriodo
+(
+    @Fecha DATETIME
+)
+RETURNS INT
+AS
+BEGIN
+    RETURN (YEAR(@Fecha) * 100 + MONTH(@Fecha));
+END;
+GO

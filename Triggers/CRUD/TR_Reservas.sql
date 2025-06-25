@@ -1,0 +1,25 @@
+CREATE TRIGGER TR_UpdateReservas ON Reservas
+AFTER UPDATE
+AS
+BEGIN
+    SET NOCOUNT ON;
+    UPDATE Reservas
+    SET UpdatedAt = GETDATE()
+    WHERE Id IN (SELECT Id FROM INSERTED);
+END;
+GO
+
+CREATE TRIGGER TR_DeleteReservas
+ON Reservas
+INSTEAD OF DELETE
+AS
+BEGIN
+    SET NOCOUNT ON;
+    UPDATE Reservas
+    SET DeletedAt = GETDATE()
+    WHERE Id IN (SELECT Id FROM DELETED);
+	UPDATE Pagos
+    SET DeletedAt = GETDATE()
+    WHERE IdReserva IN (SELECT Id FROM DELETED);
+END;
+GO
